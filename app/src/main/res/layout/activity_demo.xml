@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/id_demo_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="快速接入示例（灯）"-->
+        <!--android:gravity="center"-->
+        <!--android:onClick="startLightExample"-->
+        <!--android:background="@drawable/normalbutton_background"-->
+        <!--android:textColor="@drawable/normalbutton_textcolor"/>-->
+    <TextView
+        android:id="@+id/id_start_LP"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:text="LP通用接入示例(物模型)"
+        android:gravity="center"
+        android:background="@drawable/normalbutton_background"
+        android:textColor="@drawable/normalbutton_textcolor"/>
+
+    <TextView
+        android:id="@+id/id_start_label"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/normalbutton_background"
+        android:gravity="center"
+        android:text="设备标签"
+        android:textColor="@drawable/normalbutton_textcolor" />
+    <TextView
+        android:id="@+id/id_start_cota"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/normalbutton_background"
+        android:gravity="center"
+        android:text="COTA"
+        android:textColor="@drawable/normalbutton_textcolor" />
+
+    <TextView
+        android:id="@+id/id_start_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/normalbutton_background"
+        android:gravity="center"
+        android:text="设备影子（基础版功能）"
+        android:textColor="@drawable/normalbutton_textcolor" />
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:gravity="center"-->
+        <!--android:onClick="startDMTest"-->
+        <!--android:background="@drawable/normalbutton_background"-->
+        <!--android:textColor="@drawable/normalbutton_textcolor"-->
+        <!--android:text="设备管理（禁用-恢复）"/>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:gravity="center"-->
+        <!--android:onClick="startThingTest"-->
+        <!--android:background="@drawable/normalbutton_background"-->
+        <!--android:textColor="@drawable/normalbutton_textcolor"-->
+        <!--android:text="物模型"/>-->
+    <TextView
+        android:id="@+id/id_start_gateway"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:background="@drawable/normalbutton_background"
+        android:textColor="@drawable/normalbutton_textcolor"
+        android:text="网关接入示例"/>
+    <TextView
+        android:id="@+id/id_start_ota"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:background="@drawable/normalbutton_background"
+        android:textColor="@drawable/normalbutton_textcolor"
+        android:text="OTA示例"/>
+    <TextView
+        android:id="@+id/id_start_h2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:background="@drawable/normalbutton_background"
+        android:textColor="@drawable/normalbutton_textcolor"
+        android:text="H2 示例"/>
+
+    <TextView
+        android:id="@+id/id_start_h2_file"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:background="@drawable/normalbutton_background"
+        android:textColor="@drawable/normalbutton_textcolor"
+        android:text="H2文件上传示例"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/id_test_init"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="@drawable/normalbutton_background"
+        android:textColor="@color/red"
+        android:text="初始化"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/id_test_deinit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="@drawable/normalbutton_background"
+        android:textColor="@color/red"
+        android:text="反初始化"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/id_error_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textSize="40dp"
+        android:background="@drawable/normalbutton_background"
+        android:textColor="@color/red"
+        android:visibility="gone"/>
+
+</LinearLayout>
