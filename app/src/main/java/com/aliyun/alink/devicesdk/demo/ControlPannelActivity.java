@@ -219,7 +219,7 @@ public class ControlPannelActivity extends BaseActivity {
     private void report(String identifier, ValueWrapper valueWrapper) {
         reportData.clear();
         Map<String, ValueWrapper> reportData  = new HashMap<>();
-        valueWrapper.setValue("hello RDS");
+//        valueWrapper.setValue("hello RDS");
         Log.i(TAG, "getValue:" + valueWrapper.getValue());
         reportData.put(identifier, valueWrapper);
         try {
