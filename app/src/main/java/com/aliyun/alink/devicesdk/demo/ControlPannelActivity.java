@@ -15,6 +15,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.aliyun.alink.devicesdk.adapter.EventListAdapter;
 import com.aliyun.alink.devicesdk.adapter.PropertyListAdapter;
 import com.aliyun.alink.devicesdk.app.DemoApplication;
+import com.aliyun.alink.devicesdk.data.LinkIoTDownstreamMessageSync;
+import com.aliyun.alink.devicesdk.data.DeviceBasicInfo;
 import com.aliyun.alink.linkkit.api.LinkKit;
 import com.aliyun.alink.linksdk.cmp.connect.channel.MqttPublishRequest;
 import com.aliyun.alink.linksdk.cmp.core.base.AMessage;
@@ -39,6 +41,7 @@ import com.aliyun.alink.linksdk.tmp.utils.TmpConstant;
 import com.aliyun.alink.linksdk.tools.AError;
 import com.aliyun.alink.linksdk.tools.ALog;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,6 +83,7 @@ public class ControlPannelActivity extends BaseActivity {
     private final static String SERVICE_GET = "get";
     private final static String SERVICE_LOG_TASK = "LogTask";
     private final static String CONNECT_ID = "LINK_PERSISTENT";
+    private final static String Ting_Service_getDeviceBasicInfo = "thing.service.getDeviceBasicInfo";
 
     final static Pattern pattern = Pattern.compile("^[-\\+]?[.\\d]*$");
 
@@ -288,7 +292,7 @@ public class ControlPannelActivity extends BaseActivity {
             if (CONNECT_ID.equals(connectId) && !TextUtils.isEmpty(topic) &&
                     topic.startsWith("/sys/" + productKey + "/" + deviceName + "/rrpc/request")) {
                 showToast("收到云端同步下行");
-//                    ALog.d(TAG, "receice Message=" + new String((byte[]) aMessage.data));
+                ALog.d(TAG, "receice Message=" + new String((byte[]) aMessage.data));
                 // 服务端返回数据示例  {"method":"thing.service.test_service","id":"123374967","params":{"vv":60},"version":"1.0.0"}
                 MqttPublishRequest request = new MqttPublishRequest();
                 request.isRPC = false;
@@ -296,7 +300,31 @@ public class ControlPannelActivity extends BaseActivity {
                 String resId = topic.substring(topic.indexOf("rrpc/request/")+13);
                 request.msgId = resId;
                 // TODO 用户根据实际情况填写 仅做参考
-                request.payloadObj = "{\"id\":\"" + resId + "\", \"code\":\"200\"" + ",\"data\":{} }";
+                try {
+                    Gson gson = new Gson();
+                    String request_info = new String((byte[]) aMessage.data);
+                    Log.d(TAG, "request info is " +request_info);
+                    LinkIoTDownstreamMessageSync linkIoTDownstreamMessageSync = gson.fromJson(request_info, LinkIoTDownstreamMessageSync.class);
+                    if(linkIoTDownstreamMessageSync != null && Ting_Service_getDeviceBasicInfo.equals(linkIoTDownstreamMessageSync.method)) {
+                        Log.d(TAG, "get method " + Ting_Service_getDeviceBasicInfo);
+                        DeviceBasicInfo deviceBasicInfo = new DeviceBasicInfo();
+                        // TTODO test
+                        deviceBasicInfo.CardNumber = "12365232123";
+                        deviceBasicInfo.MacAddress = "BC:20:BA:00:11:22";
+                        deviceBasicInfo.SerialNumber = "LC1236532123";
+                        deviceBasicInfo.SoftwareVersion = "1.0.0.190216a";
+                        deviceBasicInfo.LanAddress = "192.168.52.100";
+                        String result = gson.toJson(deviceBasicInfo);
+                        Log.d(TAG, "response result is " + result);
+                        request.payloadObj = "{\"id\":\"" + resId + "\", \"code\":\"200\"" + ",\"data\":" + result + " }";
+                    } else {
+                        request.payloadObj = "{\"id\":\"" + resId + "\", \"code\":\"200\"" + ",\"data\":{} }";
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "parse json failed");
+                    e.printStackTrace();
+                    request.payloadObj = "{\"id\":\"" + resId + "\", \"code\":\"200\"" + ",\"data\":{} }";
+                }
 //                    aResponse.data =
                 LinkKit.getInstance().publish(request, new IConnectSendListener() {
                     @Override
