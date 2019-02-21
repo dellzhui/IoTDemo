@@ -9,7 +9,9 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.aliyun.alink.devicesdk.data.DeviceRegisiterResponseInfo;
 import com.aliyun.alink.devicesdk.demo.R;
+import com.aliyun.alink.devicesdk.manager.DeviceRegisiterUtil;
 import com.aliyun.alink.devicesdk.manager.IDemoCallback;
 import com.aliyun.alink.devicesdk.manager.InitManager;
 import com.aliyun.alink.dm.api.BaseInfo;
@@ -192,13 +194,15 @@ public class DemoApplication extends Application {
                 mDeviceInfoData.subDevice = new ArrayList<>();
                 if (deviceInfoData.subDevice == null) {
                     Log.d(TAG, "getDeviceInfoFrom: subDevice empty..");
-                    return;
-                }
-                for (int i = 0; i < deviceInfoData.subDevice.size(); i++) {
-                    if (checkValid(deviceInfoData.subDevice.get(i))) {
-                        mDeviceInfoData.subDevice.add(deviceInfoData.subDevice.get(i));
-                    } else {
-                        Log.d(TAG, "getDeviceInfoFrom: subDevice info invalid. discard.");
+                    // TODO:
+                    //return;
+                } else {
+                    for (int i = 0; i < deviceInfoData.subDevice.size(); i++) {
+                        if (checkValid(deviceInfoData.subDevice.get(i))) {
+                            mDeviceInfoData.subDevice.add(deviceInfoData.subDevice.get(i));
+                        } else {
+                            Log.d(TAG, "getDeviceInfoFrom: subDevice info invalid. discard.");
+                        }
                     }
                 }
 
@@ -246,6 +250,10 @@ public class DemoApplication extends Application {
      * @return
      */
     public String getFromRaw() {
+        DeviceRegisiterResponseInfo deviceRegisiterResponseInfo = DeviceRegisiterUtil.getDeviceRegisiterResponseInfo();
+        if(deviceRegisiterResponseInfo != null) {
+            return deviceRegisiterResponseInfo.toString();
+        }
         InputStreamReader inputReader = null;
         BufferedReader bufReader = null;
         try {

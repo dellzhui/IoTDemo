@@ -1,6 +1,7 @@
 package com.aliyun.alink.devicesdk.manager;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.aliyun.alink.dm.api.DeviceInfo;

@@ -1,6 +1,7 @@
 package com.aliyun.alink.devicesdk.demo;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -182,7 +183,6 @@ public class DemoActivity extends BaseActivity implements View.OnClickListener {
 
         }
     }
-
 
     private void connect() {
         Log.d(TAG, "connect() called");
