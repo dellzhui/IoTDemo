@@ -309,9 +309,9 @@ public class ControlPannelActivity extends BaseActivity {
                         Log.d(TAG, "get method " + Ting_Service_getDeviceBasicInfo);
                         DeviceBasicInfo deviceBasicInfo = new DeviceBasicInfo();
                         // TTODO test
-                        deviceBasicInfo.CardNumber = "12365232123";
-                        deviceBasicInfo.MacAddress = "BC:20:BA:00:11:22";
-                        deviceBasicInfo.SerialNumber = "LC1236532123";
+//                        deviceBasicInfo.CardNumber = "12365232123";
+//                        deviceBasicInfo.MacAddress = "BC:20:BA:00:11:22";
+//                        deviceBasicInfo.SerialNumber = "LC1236532123";
                         deviceBasicInfo.SoftwareVersion = "1.0.0.190216a";
                         deviceBasicInfo.LanAddress = "192.168.52.100";
                         String result = gson.toJson(deviceBasicInfo);

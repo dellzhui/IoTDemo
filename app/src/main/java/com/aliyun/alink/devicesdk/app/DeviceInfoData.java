@@ -1,5 +1,7 @@
 package com.aliyun.alink.devicesdk.app;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.alink.dm.api.BaseInfo;
 import com.aliyun.alink.dm.api.DeviceInfo;
@@ -31,6 +33,10 @@ public class DeviceInfoData extends DeviceInfo {
      * 后续网关测试demo 会 添加子设备 删除子设备 建立 topo关系 子设备上下线等
      */
     public List<BaseInfo> subDevice = null;
+
+    public boolean checkValid() {
+        return !TextUtils.isEmpty(this.productKey) && !TextUtils.isEmpty(this.deviceName) && (!TextUtils.isEmpty(this.productSecret) || !TextUtils.isEmpty((this.deviceSecret)));
+    }
 
     @Override
     public String toString() {

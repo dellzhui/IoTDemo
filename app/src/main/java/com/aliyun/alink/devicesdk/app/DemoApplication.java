@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.aliyun.alink.devicesdk.data.DeviceRegisiterResponseInfo;
 import com.aliyun.alink.devicesdk.demo.R;
 import com.aliyun.alink.devicesdk.manager.DeviceRegisiterUtil;
 import com.aliyun.alink.devicesdk.manager.IDemoCallback;
@@ -250,9 +249,9 @@ public class DemoApplication extends Application {
      * @return
      */
     public String getFromRaw() {
-        DeviceRegisiterResponseInfo deviceRegisiterResponseInfo = DeviceRegisiterUtil.getDeviceRegisiterResponseInfo();
-        if(deviceRegisiterResponseInfo != null) {
-            return deviceRegisiterResponseInfo.toString();
+        DeviceInfoData deviceInfoData = DeviceRegisiterUtil.getDeviceInfoData();
+        if(deviceInfoData != null) {
+            return deviceInfoData.toString();
         }
         InputStreamReader inputReader = null;
         BufferedReader bufReader = null;

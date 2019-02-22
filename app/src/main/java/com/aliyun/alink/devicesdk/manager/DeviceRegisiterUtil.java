@@ -2,9 +2,12 @@ package com.aliyun.alink.devicesdk.manager;
 
 import android.util.Log;
 
+import com.aliyun.alink.devicesdk.app.DeviceInfoData;
 import com.aliyun.alink.devicesdk.data.DeviceRegisiterRequestInfo;
-import com.aliyun.alink.devicesdk.data.DeviceRegisiterResponseInfo;
+import com.aliyun.alink.dm.api.BaseInfo;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -15,34 +18,34 @@ import okhttp3.RequestBody;
 public class DeviceRegisiterUtil {
     private static final String TAG = "DeviceRegisiterUtil";
 
-    public static DeviceRegisiterResponseInfo getDeviceRegisiterResponseInfo() {
+    public static DeviceInfoData getDeviceInfoData() {
         try {
-            DeviceRegisiterResponseInfo deviceRegisiterResponseInfo = getDeviceRegisiterResponseInfoFromProperity();
-            return deviceRegisiterResponseInfo != null ? deviceRegisiterResponseInfo : getDeviceRegisiterResponseInfoFromRequest();
+            DeviceInfoData deviceInfoData = getDeviceInfoDataFromProperity();
+            return deviceInfoData != null ? deviceInfoData : getDeviceInfoDataFromRequest();
         } catch(Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private static DeviceRegisiterResponseInfo getDeviceRegisiterResponseInfoFromProperity() {
-        DeviceRegisiterResponseInfo deviceRegisiterResponseInfo = new DeviceRegisiterResponseInfo();
-        deviceRegisiterResponseInfo.productKey = PropertyUtils.get("persist.sys.iot.productKey", "");
-        deviceRegisiterResponseInfo.deviceName = PropertyUtils.get("persist.sys.iot.productKey", "");
-        deviceRegisiterResponseInfo.productSecret = PropertyUtils.get("persist.sys.iot.productKey", "");
-        deviceRegisiterResponseInfo.deviceSecret = PropertyUtils.get("persist.sys.iot.productKey", "");
-        Log.d(TAG, "get deviceRegisiterResponseInfo is " + deviceRegisiterResponseInfo);
-        return deviceRegisiterResponseInfo.isAvailable() ? deviceRegisiterResponseInfo : null;
+    private static DeviceInfoData getDeviceInfoDataFromProperity() {
+        DeviceInfoData deviceInfoData = new DeviceInfoData();
+        deviceInfoData.productKey = PropertyUtils.get("persist.sys.iot.productKey", "");
+        deviceInfoData.deviceName = PropertyUtils.get("persist.sys.iot.deviceName", "");
+        deviceInfoData.productSecret = PropertyUtils.get("persist.sys.iot.productSecret", "");
+        deviceInfoData.deviceSecret = PropertyUtils.get("persist.sys.iot.deviceSecret", "");
+        Log.d(TAG, "get deviceInfoData from property is " + deviceInfoData);
+        return deviceInfoData.checkValid() ? deviceInfoData : null;
     }
 
-    private static void setDeviceRegisiterResponseInfoFromProperity(DeviceRegisiterResponseInfo deviceRegisiterResponseInfo) {
-        PropertyUtils.set("persist.sys.iot.productKey", deviceRegisiterResponseInfo.productKey);
-        PropertyUtils.set("persist.sys.iot.deviceName", deviceRegisiterResponseInfo.deviceName);
-        PropertyUtils.set("persist.sys.iot.productSecret", deviceRegisiterResponseInfo.productSecret);
-        PropertyUtils.set("persist.sys.iot.deviceSecret", deviceRegisiterResponseInfo.deviceSecret);
+    private static void setDeviceInfoDataFromProperity(DeviceInfoData deviceInfoData) {
+        PropertyUtils.set("persist.sys.iot.productKey", deviceInfoData.productKey);
+        PropertyUtils.set("persist.sys.iot.deviceName", deviceInfoData.deviceName);
+        PropertyUtils.set("persist.sys.iot.productSecret", deviceInfoData.productSecret);
+        PropertyUtils.set("persist.sys.iot.deviceSecret", deviceInfoData.deviceSecret);
     }
 
-    private static DeviceRegisiterResponseInfo getDeviceRegisiterResponseInfoFromRequest() {
+    private static DeviceInfoData getDeviceInfoDataFromRequest() {
         try {
             String url = "http://192.168.52.107:8000/regisiter/";
             RequestTask requestTask = new RequestTask(url);
@@ -50,9 +53,12 @@ public class DeviceRegisiterUtil {
             Log.d(TAG, "begin to start regisiter request task");
             t.start();
             t.join(10000);
-            DeviceRegisiterResponseInfo deviceRegisiterResponseInfo = requestTask.get();
-            setDeviceRegisiterResponseInfoFromProperity(deviceRegisiterResponseInfo);
-            return deviceRegisiterResponseInfo;
+            DeviceInfoData deviceInfoData = requestTask.get();
+            if(deviceInfoData.checkValid()) {
+                setDeviceInfoDataFromProperity(deviceInfoData);
+                return deviceInfoData;
+            }
+            return null;
         } catch(Exception e) {
             e.printStackTrace();
             return null;
@@ -61,7 +67,7 @@ public class DeviceRegisiterUtil {
 
     private static class RequestTask implements Runnable {
         private String mUrl;
-        private DeviceRegisiterResponseInfo mDeviceRegisiterResponseInfo;
+        private DeviceInfoData mDeviceInfoData;
 
         RequestTask(String url) {
             this.mUrl = url;
@@ -86,7 +92,7 @@ public class DeviceRegisiterUtil {
                     String json_result = response.body().string();
                     Log.d(TAG, "got regisiter response json result was [" + json_result + "]");
                     Gson gson = new Gson();
-                    set(gson.fromJson(json_result, DeviceRegisiterResponseInfo.class));
+                    set(gson.fromJson(json_result, DeviceInfoData.class));
                 }
 //                Call call = client.newCall(request);
 //                call.enqueue(new Callback() {
@@ -103,7 +109,7 @@ public class DeviceRegisiterUtil {
 //                                String json_result = response.body().string();
 //                                Log.d(TAG, "got regisiter response json result was [" + json_result + "]");
 //                                Gson gson = new Gson();
-//                                set(gson.fromJson(json_result, DeviceRegisiterResponseInfo.class));
+//                                set(gson.fromJson(json_result, DeviceInfoData.class));
 //                            }
 //                        } catch(Exception e) {
 //                            e.printStackTrace();
@@ -115,13 +121,13 @@ public class DeviceRegisiterUtil {
             }
         }
 
-        private synchronized void set(DeviceRegisiterResponseInfo deviceRegisiterResponseInfo) {
-            mDeviceRegisiterResponseInfo = deviceRegisiterResponseInfo;
+        private synchronized void set(DeviceInfoData deviceInfoData) {
+            mDeviceInfoData = deviceInfoData;
         }
 
-        synchronized DeviceRegisiterResponseInfo get() {
-            Log.d(TAG, "got regisiter response info was [" + mDeviceRegisiterResponseInfo + "]");
-            return mDeviceRegisiterResponseInfo;
+        synchronized DeviceInfoData get() {
+            Log.d(TAG, "got regisiter response info was [" + mDeviceInfoData + "]");
+            return mDeviceInfoData;
         }
     }
 }
